@@ -7,7 +7,6 @@ import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +16,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("computers")
-public class MainController {
+public class ComputerController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ComputerController.class);
     private final TransmitterService transmitterService;
     private final ComputerService computerService;
 
     @Autowired
-    public MainController(TransmitterService transmitterService, ComputerService computerService) {
+    public ComputerController(TransmitterService transmitterService, ComputerService computerService) {
         this.transmitterService = transmitterService;
         this.computerService = computerService;
     }
-
-
 
     @GetMapping(value = "/{number}/search")
     public ResponseEntity getComputersBySoftwareAndAudienceNumber(@PathVariable String number,

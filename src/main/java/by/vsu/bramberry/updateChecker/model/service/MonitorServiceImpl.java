@@ -25,7 +25,7 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public Monitor findOne(Long id) {
-        return monitorDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return monitorDao.findById(id).orElse(null);
     }
 
     @Override

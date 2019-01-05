@@ -148,6 +148,7 @@ public class UserController {
      * @param username can be null
      * @return the requested {@link User}
      */
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/{username}")
     public ResponseEntity getSpecificUser(@PathVariable("username") String username) {
         User user = userService.getUser(username);

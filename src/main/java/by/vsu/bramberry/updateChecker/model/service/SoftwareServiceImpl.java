@@ -29,7 +29,7 @@ public class SoftwareServiceImpl implements SoftwareService {
 
     @Override
     public Software findOne(Long id) {
-        return softwareDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return softwareDao.findById(id).orElse(null);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ProcessorServiceImpl implements ProcessorService {
 
     @Override
     public Processor findOne(Long id) {
-        return processorDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return processorDao.findById(id).orElse(null);
     }
 
     @Override

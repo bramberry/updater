@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("updates")
 public class UpdateController {
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ComputerController.class);
     private final TransmitterService transmitterService;
 
     @Autowired

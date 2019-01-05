@@ -29,7 +29,7 @@ public class HardwareServiceImpl implements HardwareService {
 
     @Override
     public Hardware findOne(Long id) {
-        return hardwareDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return hardwareDao.findById(id).orElse(null);
     }
 
     @Override

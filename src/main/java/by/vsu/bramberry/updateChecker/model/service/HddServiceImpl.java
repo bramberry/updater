@@ -29,7 +29,7 @@ public class HddServiceImpl implements HddService {
 
     @Override
     public Hdd findOne(Long id) {
-        return hddDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return hddDao.findById(id).orElse(null);
     }
 
     @Override

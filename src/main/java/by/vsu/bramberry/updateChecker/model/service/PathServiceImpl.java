@@ -26,7 +26,7 @@ public class PathServiceImpl implements PathService {
 
     @Override
     public Path findOne(Long id) {
-        return dao.findById(id).orElseThrow(NoSuchElementException::new);
+        return dao.findById(id).orElse(null);
     }
 
     @Override

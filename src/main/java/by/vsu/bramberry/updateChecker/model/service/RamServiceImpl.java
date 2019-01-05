@@ -28,7 +28,7 @@ public class RamServiceImpl implements RamService {
 
     @Override
     public Ram findOne(Long id) {
-        return ramDao.findById(id).orElseThrow(NoSuchElementException::new);
+        return ramDao.findById(id).orElse(null);
     }
 
     @Override
