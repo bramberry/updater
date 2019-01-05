@@ -1,7 +1,7 @@
 package by.vsu.bramberry.updateChecker.model.dao;
 
 
-import by.vsu.bramberry.updateChecker.model.entity.User;
+import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -64,8 +64,13 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public List<Computer> findAllByAudienceNumber(String audienceNumber, Pageable pageable) {
-        return computerDao.findAllByAudienceNumber(audienceNumber, pageable);
+    public List<Computer> findAll() {
+        return computerDao.findAll();
+    }
+
+    @Override
+    public List<Computer> findAllByAudienceNumber(String audienceNumber) {
+        return computerDao.findAllByAudienceNumber(audienceNumber);
     }
 
     @Override

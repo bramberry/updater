@@ -12,5 +12,5 @@ public interface ComputerDao extends JpaRepository<Computer, Long> {
 
     Page<Computer> findAll(Pageable pageable);
 
-    List<Computer> findAllByAudienceNumber(String audienceNumber, Pageable pageable);
+    List<Computer> findAllByAudienceNumber(String audienceNumber);
 }

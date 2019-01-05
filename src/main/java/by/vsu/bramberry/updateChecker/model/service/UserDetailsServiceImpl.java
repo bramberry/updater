@@ -2,8 +2,8 @@ package by.vsu.bramberry.updateChecker.model.service;
 
 
 import by.vsu.bramberry.updateChecker.model.dao.UserDAO;
-import by.vsu.bramberry.updateChecker.model.entity.Role;
-import by.vsu.bramberry.updateChecker.model.entity.User;
+import by.vsu.bramberry.updateChecker.model.entity.user.Role;
+import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

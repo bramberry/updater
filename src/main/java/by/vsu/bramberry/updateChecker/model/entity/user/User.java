@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.entity;
+package by.vsu.bramberry.updateChecker.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;

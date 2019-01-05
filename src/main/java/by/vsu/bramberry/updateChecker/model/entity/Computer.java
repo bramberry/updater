@@ -27,7 +27,11 @@ public class Computer implements Serializable {
     public Computer() {
     }
 
-    public Computer(String ip, String audienceNumber, String mac, String description, String systemUnitInvNumber, String monitorInvNumber, Set<Software> softwareSet) {
+    public Computer(String ip, String audienceNumber,
+                    String mac, String description,
+                    String systemUnitInvNumber,
+                    String monitorInvNumber,
+                    Set<Software> softwareSet) {
         this.ip = ip;
         this.audienceNumber = audienceNumber;
         this.mac = mac;
@@ -103,7 +107,7 @@ public class Computer implements Serializable {
         this.description = description;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "computer")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "computer")
     public Hardware getHardware() {
         return hardware;
     }
@@ -112,7 +116,7 @@ public class Computer implements Serializable {
         this.hardware = hardware;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "computer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "computer")
     public Set<Software> getSoftwareSet() {
         return softwareSet;
     }

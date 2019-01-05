@@ -15,7 +15,9 @@ public interface ComputerService {
 
     List<Computer> findAll(Pageable pageable);
 
-    List<Computer> findAllByAudienceNumber(String audienceNumber, Pageable pageable);
+    List<Computer> findAll();
+
+    List<Computer> findAllByAudienceNumber(String audienceNumber);
 
     long count();
 

@@ -1,8 +1,8 @@
 package by.vsu.bramberry.updateChecker.controllers;
 
 
-import by.vsu.bramberry.updateChecker.model.entity.Role;
-import by.vsu.bramberry.updateChecker.model.entity.User;
+import by.vsu.bramberry.updateChecker.model.entity.user.Role;
+import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import by.vsu.bramberry.updateChecker.model.security.JwtTokenProvider;
 import by.vsu.bramberry.updateChecker.model.service.UserService;
 import by.vsu.bramberry.updateChecker.model.service.UserValidationService;

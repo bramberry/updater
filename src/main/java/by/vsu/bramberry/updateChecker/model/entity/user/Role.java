@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.entity;
+package by.vsu.bramberry.updateChecker.model.entity.user;
 
 
 import org.springframework.security.core.GrantedAuthority;

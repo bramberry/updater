@@ -1,6 +1,6 @@
 package by.vsu.bramberry.updateChecker.model.service;
 
-import by.vsu.bramberry.updateChecker.model.entity.User;
+import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("computers")
 public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -29,24 +30,12 @@ public class MainController {
     }
 
 
-    @GetMapping(value = "/computers")
-    public ResponseEntity getAudience(@RequestParam Integer page, @RequestParam Integer size) {
-        List<Computer> computers = computerService.findAll(PageRequest.of(page, size));
-        return ResponseEntity.ok(computers);
-    }
 
-    @GetMapping(value = "/computers/audience/{number}")
-    public ResponseEntity getAudienceByNumber(@PathVariable("number") String number,
-                                              @RequestParam Integer page,
-                                              @RequestParam Integer size) {
-        List<Computer> computers = computerService.findAllByAudienceNumber(number, PageRequest.of(page, size));
-        return ResponseEntity.ok(computers);
-    }
-
-    @GetMapping(value = "/computers/{number}/search")
-    public ResponseEntity getComputersBySoftwareAndAudienceNumber(@PathVariable String number, @RequestParam String programName) {
+    @GetMapping(value = "/{number}/search")
+    public ResponseEntity getComputersBySoftwareAndAudienceNumber(@PathVariable String number,
+                                                                  @RequestParam String programName) {
         List<Computer> computers = new ArrayList<>();
-        for (Computer computer : computerService.findAll(PageRequest.of(1, 1))) {
+        for (Computer computer : computerService.findAllByAudienceNumber(number)) {
             if (computer.getAudienceNumber().equals(number)) {
                 for (Software software : computer.getSoftwareSet()) {
                     if (software.getName().equals(programName))
@@ -59,14 +48,14 @@ public class MainController {
         return ResponseEntity.ok(computers);
     }
 
-    @GetMapping(value = "/computers/{id}")
-    public ResponseEntity getComputer(@PathVariable String id) {
-        Computer computer = computerService.findOne(Long.parseLong(id));
+    @GetMapping(value = "/{id}")
+    public ResponseEntity getComputer(@PathVariable Long id) {
+        Computer computer = computerService.findOne(id);
         return ResponseEntity.ok(computer);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
-    @PostMapping(value = "/computers")
+    @PostMapping
     public ResponseEntity save(@RequestBody Computer computer) {
         computerService.save(computer);
         logger.info(computer.toString());
@@ -75,22 +64,9 @@ public class MainController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
-    @GetMapping(value = "/computers/update")
-    public ResponseEntity updateAll() {
-        transmitterService.transmitAll();
-        return ResponseEntity.ok("Task started");
-    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
-    @GetMapping(value = "/computers/{ip}/update/")
-    public ResponseEntity updateOne(@PathVariable String ip) {
-        transmitterService.transmit(ip);
-        return ResponseEntity.ok().body("Task started");
-    }
-
-    @DeleteMapping(value = "/computers/{id}")
-    public ResponseEntity delete(@PathVariable String id) {
-        computerService.delete(Long.parseLong(id));
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        computerService.delete(id);
         return ResponseEntity.ok("Deleted successfully");
     }
 }
