@@ -4,9 +4,8 @@ import by.vsu.bramberry.updateChecker.model.entity.Computer;
 import by.vsu.bramberry.updateChecker.model.entity.software.Software;
 import by.vsu.bramberry.updateChecker.model.service.iservice.ComputerService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("computers")
+@Slf4j
+@AllArgsConstructor
 public class ComputerController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ComputerController.class);
     private final TransmitterService transmitterService;
     private final ComputerService computerService;
-
-    @Autowired
-    public ComputerController(TransmitterService transmitterService, ComputerService computerService) {
-        this.transmitterService = transmitterService;
-        this.computerService = computerService;
-    }
 
     @GetMapping(value = "/{number}/search")
     public ResponseEntity getComputersBySoftwareAndAudienceNumber(@PathVariable String number,
@@ -55,7 +49,7 @@ public class ComputerController {
     @PostMapping
     public ResponseEntity save(@RequestBody Computer computer) {
         computerService.save(computer);
-        logger.info(computer.toString());
+        log.info(computer.toString());
         transmitterService.transmit(computer.getIp());
         return ResponseEntity.ok(computer);
     }

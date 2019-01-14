@@ -7,10 +7,8 @@ import by.vsu.bramberry.updateChecker.model.service.iservice.PathService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
 import by.vsu.bramberry.updateChecker.transfer.Transmitter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,17 +20,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class TransmitterServiceImpl implements TransmitterService {
-    private static final Logger logger = LoggerFactory.getLogger(TransmitterServiceImpl.class);
     private final ComputerService computerService;
     private final PathService pathService;
-
-
-    @Autowired
-    public TransmitterServiceImpl(ComputerService computerService, PathService pathService) {
-        this.computerService = computerService;
-        this.pathService = pathService;
-    }
 
     @Override
     public void transmitAll() {
@@ -40,7 +32,7 @@ public class TransmitterServiceImpl implements TransmitterService {
         ExecutorService es = Executors.newFixedThreadPool(ap);
 
         ArrayList<String> ipList = new ArrayList<>();
-        List<Computer> computers = computerService.findAll(Pageable.unpaged());
+        List<Computer> computers = computerService.findAll();
         computers.forEach(computer -> ipList.add(computer.getIp()));
 
 

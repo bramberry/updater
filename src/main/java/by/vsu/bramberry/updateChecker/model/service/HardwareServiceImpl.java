@@ -4,23 +4,19 @@ import by.vsu.bramberry.updateChecker.model.dao.HardwareDao;
 import by.vsu.bramberry.updateChecker.model.entity.Computer;
 import by.vsu.bramberry.updateChecker.model.entity.hardware.Hardware;
 import by.vsu.bramberry.updateChecker.model.service.iservice.HardwareService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class HardwareServiceImpl implements HardwareService {
-    private static final Logger logger = LoggerFactory.getLogger(HardwareServiceImpl.class);
+
     private final HardwareDao hardwareDao;
 
-    @Autowired
-    public HardwareServiceImpl(HardwareDao hardwareDao) {
-        this.hardwareDao = hardwareDao;
-    }
 
     @Override
     public Hardware save(Hardware hardware) {

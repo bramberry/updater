@@ -6,9 +6,8 @@ import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import by.vsu.bramberry.updateChecker.model.security.JwtTokenProvider;
 import by.vsu.bramberry.updateChecker.model.service.UserService;
 import by.vsu.bramberry.updateChecker.model.service.UserValidationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,22 +33,14 @@ import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.TO
  */
 @RestController
 @RequestMapping("users")
+@Slf4j
+@AllArgsConstructor
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UserValidationService validatorService;
     private final UserService userService;
-
-    @Autowired
-    public UserController(AuthenticationManager authenticationManager,
-                          JwtTokenProvider tokenProvider, UserValidationService validatorService, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
-        this.validatorService = validatorService;
-        this.userService = userService;
-    }
 
     /**
      * User sign up method. Includes user validation
@@ -58,25 +49,25 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity signUp(@RequestBody User user) {
-        logger.warn("{}", user);
+        log.warn("{}", user);
         Map<String, String> err = validatorService.validate(user);
 
         if (userService.isExists(user.getUsername())) {
             err.put("username", "Username already exists");
         }
         if (err.size() > 0) {
-            logger.warn("Validation failed for user {}", user.getUsername());
+            log.warn("Validation failed for user {}", user.getUsername());
             return ResponseEntity.badRequest().body("Validation failed for user {}" + err);
         }
-        logger.debug("Try to register new User {}", user.getUsername());
+        log.debug("Try to register new User {}", user.getUsername());
         String actualPassword = user.getPassword();
         userService.save(user);
 
-        logger.debug("Authenticate User {}", user.getUsername());
+        log.debug("Authenticate User {}", user.getUsername());
         auth(user.getUsername(), actualPassword);
 
 
-        logger.debug("Generate token for User {}", user.getUsername());
+        log.debug("Generate token for User {}", user.getUsername());
         String token = tokenProvider.generateToken(user.getUsername());
 
         return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(user);
@@ -105,17 +96,17 @@ public class UserController {
         Map<String, String> err = validatorService.validate(updatedUser);
 
         if (err.size() > 0) {
-            logger.warn("Validation failed for user {}", user.getUsername());
+            log.warn("Validation failed for user {}", user.getUsername());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed for user:\n" + err);
         }
 
         userService.update(updatedUser);
 
         if (user.getPassword() != null) {
-            logger.debug("Authenticate User {}", user.getUsername());
+            log.debug("Authenticate User {}", user.getUsername());
             auth(user.getUsername(), user.getPassword());
 
-            logger.debug("Generate token for User {}", user.getUsername());
+            log.debug("Generate token for User {}", user.getUsername());
             String token = tokenProvider.generateToken(user.getUsername());
 
             return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body("Success!");
@@ -134,9 +125,9 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity login(@PathParam("username") String username, @PathParam("password") String password) {
         auth(username, password);
-        logger.warn("User {} successfully authenticated", username);
+        log.warn("User {} successfully authenticated", username);
 
-        logger.debug("Generate token for User {}", username);
+        log.debug("Generate token for User {}", username);
         String token = tokenProvider.generateToken(username);
 
         return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body("Success!");

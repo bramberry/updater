@@ -3,21 +3,19 @@ package by.vsu.bramberry.updateChecker.model.service;
 import by.vsu.bramberry.updateChecker.model.dao.PathDao;
 import by.vsu.bramberry.updateChecker.model.entity.path.Path;
 import by.vsu.bramberry.updateChecker.model.service.iservice.PathService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class PathServiceImpl implements PathService {
 
     private final PathDao dao;
 
-    @Autowired
-    public PathServiceImpl(PathDao dao) {
-        this.dao = dao;
-    }
 
     @Override
     public Path save(Path path) {

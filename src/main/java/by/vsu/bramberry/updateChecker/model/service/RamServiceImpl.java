@@ -3,23 +3,18 @@ package by.vsu.bramberry.updateChecker.model.service;
 import by.vsu.bramberry.updateChecker.model.dao.RamDao;
 import by.vsu.bramberry.updateChecker.model.entity.hardware.Ram;
 import by.vsu.bramberry.updateChecker.model.service.iservice.RamService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class RamServiceImpl implements RamService {
-    private static final Logger logger = LoggerFactory.getLogger(RamServiceImpl.class);
     private final RamDao ramDao;
-
-    @Autowired
-    public RamServiceImpl(RamDao ramDao) {
-        this.ramDao = ramDao;
-    }
 
     @Override
     public Ram save(Ram ram) {
@@ -39,6 +34,11 @@ public class RamServiceImpl implements RamService {
     @Override
     public List<Ram> findAll() {
         return ramDao.findAll();
+    }
+
+    @Override
+    public Set<Ram> findByHardwareId(Long id) {
+        return ramDao.findAllByHardwareId(id);
     }
 
     @Override

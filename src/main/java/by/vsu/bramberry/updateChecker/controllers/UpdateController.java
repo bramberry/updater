@@ -1,9 +1,8 @@
 package by.vsu.bramberry.updateChecker.controllers;
 
 import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("updates")
+@Slf4j
+@AllArgsConstructor
 public class UpdateController {
-    private static final Logger logger = LoggerFactory.getLogger(ComputerController.class);
     private final TransmitterService transmitterService;
-
-    @Autowired
-    public UpdateController(TransmitterService transmitterService) {
-        this.transmitterService = transmitterService;
-    }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping

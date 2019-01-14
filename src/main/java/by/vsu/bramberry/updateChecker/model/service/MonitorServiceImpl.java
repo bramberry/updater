@@ -3,20 +3,18 @@ package by.vsu.bramberry.updateChecker.model.service;
 import by.vsu.bramberry.updateChecker.model.dao.MonitorDao;
 import by.vsu.bramberry.updateChecker.model.entity.hardware.Monitor;
 import by.vsu.bramberry.updateChecker.model.service.iservice.MonitorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class MonitorServiceImpl implements MonitorService {
     private MonitorDao monitorDao;
 
-    @Autowired
-    public MonitorServiceImpl(MonitorDao monitorDao) {
-        this.monitorDao = monitorDao;
-    }
 
     @Override
     public Monitor save(Monitor monitor) {

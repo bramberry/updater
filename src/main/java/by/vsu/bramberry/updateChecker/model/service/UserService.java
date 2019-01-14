@@ -4,9 +4,8 @@ package by.vsu.bramberry.updateChecker.model.service;
 import by.vsu.bramberry.updateChecker.model.dao.UserDAO;
 import by.vsu.bramberry.updateChecker.model.entity.user.Role;
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +20,13 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 @Service
+@AllArgsConstructor
+@Slf4j
 public class UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
-        this.userDAO = userDAO;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     /**
      * Searches all user from a storage
@@ -95,7 +89,7 @@ public class UserService {
         User fromDAO = userDAO.findByUsername(user.getUsername());
         if (fromDAO != null) {
             boolean matches = passwordEncoder.matches(user.getPassword(), fromDAO.getPassword());
-            logger.debug("passwords matches: {}", matches);
+            log.debug("passwords matches: {}", matches);
             if (matches) {
                 return fromDAO.getRole().equals(Role.ADMIN);
             }

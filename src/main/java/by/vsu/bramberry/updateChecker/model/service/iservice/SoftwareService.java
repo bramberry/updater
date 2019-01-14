@@ -14,6 +14,8 @@ public interface SoftwareService {
 
     List<Software> findAll();
 
+    List<Software> findByComputerId(Long id);
+
     long count();
 
     void delete(Long id);

@@ -3,24 +3,18 @@ package by.vsu.bramberry.updateChecker.model.service;
 import by.vsu.bramberry.updateChecker.model.dao.SoftwareDao;
 import by.vsu.bramberry.updateChecker.model.entity.software.Software;
 import by.vsu.bramberry.updateChecker.model.service.iservice.SoftwareService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class SoftwareServiceImpl implements SoftwareService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SoftwareServiceImpl.class);
     private final SoftwareDao softwareDao;
-
-    @Autowired
-    public SoftwareServiceImpl(SoftwareDao softwareDao) {
-        this.softwareDao = softwareDao;
-    }
 
     @Override
     public Software save(Software software) {
@@ -40,6 +34,11 @@ public class SoftwareServiceImpl implements SoftwareService {
     @Override
     public List<Software> findAll() {
         return softwareDao.findAll();
+    }
+
+    @Override
+    public List<Software> findByComputerId(Long id) {
+        return softwareDao.findAllByComputerId(id);
     }
 
     @Override

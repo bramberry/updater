@@ -2,9 +2,8 @@ package by.vsu.bramberry.updateChecker.controllers;
 
 import by.vsu.bramberry.updateChecker.model.entity.Computer;
 import by.vsu.bramberry.updateChecker.model.service.iservice.ComputerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +16,10 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("audiences")
+@Slf4j
+@AllArgsConstructor
 public class AudienceController {
-    private static final Logger logger = LoggerFactory.getLogger(AudienceController.class);
     private final ComputerService computerService;
-
-    @Autowired
-    public AudienceController(ComputerService computerService) {
-        this.computerService = computerService;
-    }
 
     @GetMapping
     public ResponseEntity<Set<String>> getAudiencesNumbers() {
