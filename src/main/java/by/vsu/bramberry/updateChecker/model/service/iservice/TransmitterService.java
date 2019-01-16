@@ -1,7 +1,9 @@
 package by.vsu.bramberry.updateChecker.model.service.iservice;
 
-public interface TransmitterService {
-    void transmitAll();
+import java.util.concurrent.ExecutionException;
 
-    void transmit(String ipList);
+public interface TransmitterService {
+    void transmitAll() throws InterruptedException, ExecutionException;
+
+    void transmit(String ipList) throws ExecutionException, InterruptedException;
 }

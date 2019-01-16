@@ -6,17 +6,16 @@ import by.vsu.bramberry.updateChecker.model.service.iservice.ComputerService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.PathService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
 import by.vsu.bramberry.updateChecker.transfer.Transmitter;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 @Service
@@ -25,45 +24,39 @@ import java.util.concurrent.Future;
 public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
     private final PathService pathService;
+    private List<Path> paths;
+    private CompletionService<Computer> service;
 
-    @Override
-    public void transmitAll() {
-        int ap = Runtime.getRuntime().availableProcessors();
-        ExecutorService es = Executors.newFixedThreadPool(ap);
-
-        ArrayList<String> ipList = new ArrayList<>();
-        List<Computer> computers = computerService.findAll();
-        computers.forEach(computer -> ipList.add(computer.getIp()));
-
-
-        List<Path> paths = pathService.findAll();
-        List<Transmitter> threads = new ArrayList<>();
-        try {
-            for (String ip : ipList) {
-                for (int i = 0; i < threads.size() - 1; i++) {
-                    threads.add(new Transmitter(ip, paths));
-                }
-            }
-            List<Future<String>> list = es.invokeAll(threads);
-            es.shutdown();
-        } catch (InterruptedException e) {
-            e.printStackTrace(System.out);
-        }
+    @PostConstruct
+    private void init() {
+        this.paths = pathService.findAll();
     }
 
     @Override
-    public void transmit(String ip) {
-        List<Path> paths = pathService.findAll();
-        ExecutorService es = Executors.newSingleThreadExecutor();
-        Transmitter transmitter = new Transmitter(ip, paths);
-        Future<String> stringFuture = es.submit(transmitter);
-        ObjectMapper mapper = new ObjectMapper();
-        Computer computer = null;
-        try {
-            computer = mapper.readValue(stringFuture.get(), Computer.class);
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            e.printStackTrace();
+    public void transmitAll() throws InterruptedException, ExecutionException {
+        ArrayList<String> ipList = Lists.newArrayList();
+        List<Computer> computers = computerService.findAll();
+        computers.forEach(computer -> ipList.add(computer.getIp()));
+
+        for (String ip : ipList) {
+            Transmitter transmitter = new Transmitter(ip, paths);
+            service.submit(transmitter);
         }
+        computers = Lists.newArrayList();
+
+        for (int i = 0; i < ipList.size(); i++) {
+            Future<Computer> future = service.take();
+            computers.add(future.get());
+        }
+
+        computers.forEach(computerService::update);
+    }
+
+    @Override
+    public void transmit(String ip) throws ExecutionException, InterruptedException {
+        Transmitter transmitter = new Transmitter(ip, paths);
+        Future<Computer> stringFuture = service.submit(transmitter);
+        Computer computer = stringFuture.get();
         if (computer != null) {
             computer.setIp(ip);
             computerService.update(computer);

@@ -123,7 +123,7 @@ public class UserController {
      * @return Authentication error or new token in Header
      */
     @PostMapping("/login")
-    public ResponseEntity login(@PathParam("username") String username, @PathParam("password") String password) {
+    public ResponseEntity<String> login(@PathParam("username") String username, @PathParam("password") String password) {
         auth(username, password);
         log.warn("User {} successfully authenticated", username);
 
