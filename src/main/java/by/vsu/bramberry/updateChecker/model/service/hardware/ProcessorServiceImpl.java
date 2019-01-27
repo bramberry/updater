@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.service;
+package by.vsu.bramberry.updateChecker.model.service.hardware;
 
 import by.vsu.bramberry.updateChecker.model.dao.ProcessorDao;
 import by.vsu.bramberry.updateChecker.model.entity.hardware.Processor;

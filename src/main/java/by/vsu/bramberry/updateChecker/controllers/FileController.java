@@ -1,10 +1,11 @@
 package by.vsu.bramberry.updateChecker.controllers;
 
 
-import by.vsu.bramberry.updateChecker.model.entity.UploadFileResponse;
+import by.vsu.bramberry.updateChecker.model.entity.UploadFile;
 import by.vsu.bramberry.updateChecker.model.service.FileStorageService;
+import by.vsu.bramberry.updateChecker.model.service.iservice.UploadFileService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,13 +19,10 @@ import java.io.IOException;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class FileController {
     private final FileStorageService fileStorageService;
-
-    @Autowired
-    public FileController(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
-    }
+    private final UploadFileService uploadFileService;
 
     /**
      * @return updated channel with new video or Uploading error
@@ -38,8 +36,10 @@ public class FileController {
                 .path(fileName)
                 .toUriString();
 
-        return ResponseEntity.ok(new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize()));
+        UploadFile uploadFile = new UploadFile(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+
+        return ResponseEntity.ok(uploadFileService.save(uploadFile));
     }
 
     @GetMapping("/download/{fileName:.+}")

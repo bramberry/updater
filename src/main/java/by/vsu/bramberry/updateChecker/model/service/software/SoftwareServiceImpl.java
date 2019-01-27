@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.service;
+package by.vsu.bramberry.updateChecker.model.service.software;
 
 import by.vsu.bramberry.updateChecker.model.dao.SoftwareDao;
 import by.vsu.bramberry.updateChecker.model.entity.software.Software;

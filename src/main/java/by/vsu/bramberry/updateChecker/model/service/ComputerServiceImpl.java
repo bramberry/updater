@@ -5,6 +5,7 @@ import by.vsu.bramberry.updateChecker.model.entity.Computer;
 import by.vsu.bramberry.updateChecker.model.entity.hardware.*;
 import by.vsu.bramberry.updateChecker.model.entity.software.Software;
 import by.vsu.bramberry.updateChecker.model.service.iservice.*;
+import by.vsu.bramberry.updateChecker.model.service.software.UpdateServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

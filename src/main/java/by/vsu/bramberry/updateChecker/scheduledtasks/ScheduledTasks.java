@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @Component
 @Slf4j
@@ -24,7 +25,7 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "0 0 18 * * *")
-    public void reportCurrentTime() {
+    public void reportCurrentTime() throws ExecutionException, InterruptedException {
         log.info("Scheduled update at: {}",
                 dateFormat.format(new Date()));
         transmitterService.transmitAll();

@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.service;
+package by.vsu.bramberry.updateChecker.model.service.software;
 
 import by.vsu.bramberry.updateChecker.model.entity.software.Software;
 import lombok.extern.slf4j.Slf4j;
@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Set;
 
 @Slf4j
-class UpdateServiceImpl {
-    static void updateSoftware(Set<Software> newSet, Set<Software> oldSet) {
+public class UpdateServiceImpl {
+    public static void updateSoftware(Set<Software> newSet, Set<Software> oldSet) {
         for (Software software : newSet) {
             if (!oldSet.isEmpty()) {
                 for (Software s : oldSet) {

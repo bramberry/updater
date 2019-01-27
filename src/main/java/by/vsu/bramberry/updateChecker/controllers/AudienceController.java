@@ -32,7 +32,7 @@ public class AudienceController {
     }
 
     @GetMapping(value = "/{number}")
-    public ResponseEntity getAudienceByNumber(@PathVariable String number) {
+    public ResponseEntity<List<Computer>> getAudienceByNumber(@PathVariable String number) {
         List<Computer> computers = computerService.findAllByAudienceNumber(number);
         return ResponseEntity.ok(computers);
     }

@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.service;
+package by.vsu.bramberry.updateChecker.model.service.user;
 
 
 import by.vsu.bramberry.updateChecker.model.dao.UserDAO;
