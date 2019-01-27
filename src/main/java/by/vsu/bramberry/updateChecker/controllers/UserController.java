@@ -47,9 +47,10 @@ public class UserController {
      *
      * @return new {@link User} with Authentication token, or Map of errors
      */
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @PostMapping
     public ResponseEntity signUp(@RequestBody User user) {
-        log.warn("{}", user);
+        log.info("{}", user);
         Map<String, String> err = validatorService.validate(user);
 
         if (userService.isExists(user.getUsername())) {
@@ -82,7 +83,7 @@ public class UserController {
      * @throws NullPointerException If user is null
      */
     @PatchMapping("/{username}")
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN') and isFullyAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     public ResponseEntity edit(@PathVariable("username") String username, @RequestBody User user) {
 
         String authUsername = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();

@@ -48,6 +48,7 @@ public class UpdateController {
         return ResponseEntity.ok().body("Task started");
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping("download")
     public ResponseEntity<String> initDownload(@RequestParam String filename, @RequestParam String ip) {
 
@@ -55,7 +56,6 @@ public class UpdateController {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/InitDownload")
                 .queryParam("filename", downloadUri);
-
 
         restTemplate.exchange(
                 builder.toUriString(),
