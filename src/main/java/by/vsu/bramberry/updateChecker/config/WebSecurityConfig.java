@@ -2,7 +2,7 @@ package by.vsu.bramberry.updateChecker.config;
 
 import by.vsu.bramberry.updateChecker.model.security.JwtAuthenticationEntryPoint;
 import by.vsu.bramberry.updateChecker.model.security.JwtAuthenticationFilter;
-import by.vsu.bramberry.updateChecker.model.service.UserDetailsServiceImpl;
+import by.vsu.bramberry.updateChecker.model.service.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

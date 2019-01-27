@@ -1,4 +1,4 @@
-package by.vsu.bramberry.updateChecker.model.service;
+package by.vsu.bramberry.updateChecker.model.service.user;
 
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import lombok.extern.slf4j.Slf4j;

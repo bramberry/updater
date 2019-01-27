@@ -1,0 +1,40 @@
+{
+  "softwareSet": [
+    {
+      "name": "Notepad++",
+      "currentVersion": "7.55",
+      "installDate": "2018-02-27T23:54:24+03:00"
+    }
+  ],
+  "hardware": {
+    "processor": {
+      "amountOfCores": 2,
+      "cpu": 1701.0,
+      "virtualizationFirmwareEnabled": false
+    },
+    "hddSet": [
+      {
+        "fragmentation": "153/153",
+        "model": "Fixed",
+        "diskName": "C:\\"
+      },
+      {
+        "fragmentation": "730/730",
+        "model": "Fixed",
+        "diskName": "E:\\"
+      }
+    ],
+    "ramSet": [
+      {
+        "volume": "4",
+        "model": null,
+        "technicalSpeed": "1600",
+        "serialNumber": "4307F9B0"
+      }
+    ],
+    "monitor": {
+      "diagonal": "17,9",
+      "model": "Универсальный монитор PnP"
+    }
+  }
+}
