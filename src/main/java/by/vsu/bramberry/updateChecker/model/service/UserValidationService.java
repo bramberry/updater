@@ -1,7 +1,6 @@
 package by.vsu.bramberry.updateChecker.model.service;
 
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,11 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 @Service
-@AllArgsConstructor
 @Slf4j
 public class UserValidationService {
 
     @Value(value = "${eldest.date.year}")
-    private Integer year;
+    private Integer year = 1950;
 
     /**
      * User validation method.
