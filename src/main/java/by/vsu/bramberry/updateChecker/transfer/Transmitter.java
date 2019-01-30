@@ -15,9 +15,9 @@ import java.util.concurrent.Callable;
 
 @Slf4j
 public class Transmitter implements Callable<Computer> {
+    private final RestTemplate restTemplate;
     private String ip;
     private List<Path> paths;
-    private final RestTemplate restTemplate;
 
 
     public Transmitter(String ip, List<Path> paths) {

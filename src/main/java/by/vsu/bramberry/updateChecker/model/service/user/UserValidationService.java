@@ -2,10 +2,8 @@ package by.vsu.bramberry.updateChecker.model.service.user;
 
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -20,9 +18,6 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class UserValidationService {
-
-    @Value(value = "${eldest.date.year}")
-    private Integer year = 1950;
 
     /**
      * User validation method.
@@ -55,16 +50,6 @@ public class UserValidationService {
         matcher = pattern.matcher(user.getLastName());
         if (!matcher.matches()) {
             errors.put("lastName", "Last Name must contain only text symbols");
-        }
-        if (user.getDateOfBirth() == null) {
-            return errors;
-        }
-        if (user.getDateOfBirth().after(new Date())) {
-            errors.put("dateOfBirth", "Date Of Birth shouldn't be after now");
-        }
-        if (user.getDateOfBirth().before(new Date(year))) {
-            errors.put("dateOfBirth",
-                    String.format("Date Of Birth shouldn't be before %d year", year));
         }
         return errors;
     }

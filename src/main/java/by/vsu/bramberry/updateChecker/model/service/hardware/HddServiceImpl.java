@@ -18,7 +18,6 @@ public class HddServiceImpl implements HddService {
     private final HddDao hddDao;
 
 
-
     @Override
     public Hdd save(Hdd hdd) {
         return hddDao.save(hdd);

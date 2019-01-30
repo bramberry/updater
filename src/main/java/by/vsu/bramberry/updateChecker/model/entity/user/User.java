@@ -28,8 +28,6 @@ public class User {
     @Column(nullable = false)
     @JsonProperty("lastName")
     private String lastName;
-    @JsonProperty("dateOfBirth")
-    private Date dateOfBirth;
     @JsonProperty("dateRegistered")
     private Date dateRegistered;
     @Column(nullable = false)

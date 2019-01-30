@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 @AllArgsConstructor
 public class UpdateController {
     private final TransmitterService transmitterService;
-    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate = new RestTemplate();
     private final UploadFileService uploadFileService;
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")

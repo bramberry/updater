@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "computer")
+@Table(name = "upload_file")
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString

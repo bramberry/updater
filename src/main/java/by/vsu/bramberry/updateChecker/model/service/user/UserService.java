@@ -127,10 +127,6 @@ public class UserService {
             oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        if (user.getDateOfBirth() != null) {
-            oldUser.setDateOfBirth(user.getDateOfBirth());
-        }
-
         if (user.getFirstName() != null) {
             oldUser.setFirstName(user.getFirstName());
         }

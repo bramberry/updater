@@ -7,19 +7,16 @@ import by.vsu.bramberry.updateChecker.model.service.iservice.PathService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.TransmitterService;
 import by.vsu.bramberry.updateChecker.transfer.Transmitter;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
@@ -27,8 +24,16 @@ public class TransmitterServiceImpl implements TransmitterService {
     private List<Path> paths;
     private CompletionService<Computer> service;
 
+    @Autowired
+    public TransmitterServiceImpl(ComputerService computerService, PathService pathService) {
+        this.computerService = computerService;
+        this.pathService = pathService;
+    }
+
     @PostConstruct
     private void init() {
+        ExecutorService exec = Executors.newFixedThreadPool(Thread.activeCount());
+        this.service = new ExecutorCompletionService(exec);
         this.paths = pathService.findAll();
     }
 
