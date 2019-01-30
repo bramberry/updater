@@ -15,10 +15,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.concurrent.ExecutionException;
 
-@RestController
-@RequestMapping("updates")
 @Slf4j
+@RestController
 @AllArgsConstructor
+@RequestMapping("updates")
 public class UpdateController {
     private final TransmitterService transmitterService;
     private final RestTemplate restTemplate = new RestTemplate();
