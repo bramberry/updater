@@ -7,8 +7,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.persistence.*;
 import java.util.Set;
 
 @Data
@@ -20,16 +22,15 @@ public class Computer {
     public static final String SEQUENCE_NAME = "computer_sequence";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String ip;
     private String audienceNumber;
     private String mac;
     private String description;
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String systemUnitInvNumber;
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String monitorInvNumber;
     private Set<Software> softwareSet;
     private Hardware hardware;

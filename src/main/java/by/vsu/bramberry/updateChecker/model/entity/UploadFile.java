@@ -1,10 +1,9 @@
 package by.vsu.bramberry.updateChecker.model.entity;
 
 import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 
 @NoArgsConstructor
@@ -17,9 +16,8 @@ public class UploadFile {
     public static final String SEQUENCE_NAME = "files_sequence";
     @Id
     private Long id;
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String fileName;
-    @Column(unique = true)
     private String fileDownloadUri;
     private String fileType;
     private long size;

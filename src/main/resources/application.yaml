@@ -1,18 +1,6 @@
 spring:
   application:
     name: updateChecker
-  datasource:
-    url: jdbc:mysql://localhost:3306/update_checker?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password: turvo
-    driverClassName: com.mysql.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
   servlet:
     multipart:
       enabled: true

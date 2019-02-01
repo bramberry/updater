@@ -2,8 +2,11 @@ package by.vsu.bramberry.updateChecker.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -17,23 +20,19 @@ public class User {
     public static final String SEQUENCE_NAME = "users_sequence";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
     @JsonProperty("username")
+    @Indexed(unique = true)
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
+    @NotNull
     private String password;
-    @Column(nullable = false)
     @JsonProperty("firstName")
     private String firstName;
-    @Column(nullable = false)
     @JsonProperty("lastName")
     private String lastName;
     @JsonProperty("dateRegistered")
     private Date dateRegistered;
-    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
