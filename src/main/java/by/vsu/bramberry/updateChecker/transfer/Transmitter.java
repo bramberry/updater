@@ -26,9 +26,9 @@ public class Transmitter implements Callable<Computer> {
     @Override
     public Computer call() {
 
-      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/GetMainInfo");
+      UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/GetMainInfo")
+          .queryParam("paths", paths);
       log.info("request: {}", builder.toUriString());
-      HttpEntity<List<String>> entity = new HttpEntity<>();
 
         //Отправляем пути к .exe файлам
         HttpEntity<Computer> response = restTemplate.exchange(
