@@ -14,7 +14,7 @@ import java.net.URI;
 
 @Slf4j
 @RestController
-@RequestMapping("request")
+@RequestMapping("requests")
 @AllArgsConstructor
 public class RequestController {
     private final RequestService requestService;

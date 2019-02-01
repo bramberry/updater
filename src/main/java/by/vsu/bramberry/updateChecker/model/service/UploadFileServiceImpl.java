@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UploadFileServiceImpl implements UploadFileService {
     private final UploadFileDao dao;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
     @Override
     public UploadFile getByFileName(String filename) {
@@ -18,6 +19,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     public UploadFile save(UploadFile uploadFile) {
+        uploadFile.setId(sequenceGeneratorService.getNextSequence(UploadFile.SEQUENCE_NAME));
         return dao.save(uploadFile);
     }
 }

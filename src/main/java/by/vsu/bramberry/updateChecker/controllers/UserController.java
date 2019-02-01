@@ -4,6 +4,8 @@ package by.vsu.bramberry.updateChecker.controllers;
 import by.vsu.bramberry.updateChecker.model.entity.user.Role;
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import by.vsu.bramberry.updateChecker.model.security.JwtTokenProvider;
+import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.HEADER_STRING;
+import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.TOKEN_PREFIX;
 import by.vsu.bramberry.updateChecker.model.service.user.UserService;
 import by.vsu.bramberry.updateChecker.model.service.user.UserValidationService;
 import lombok.AllArgsConstructor;
@@ -20,9 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.Map;
-
-import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.HEADER_STRING;
-import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.TOKEN_PREFIX;
 
 
 /**
@@ -47,7 +46,7 @@ public class UserController {
      *
      * @return new {@link User} with Authentication token, or Map of errors
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    //@PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @PostMapping
     public ResponseEntity signUp(@RequestBody User user) {
         log.info("{}", user);

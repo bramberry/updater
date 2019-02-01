@@ -6,13 +6,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
+@Data
 public class User {
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

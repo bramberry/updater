@@ -62,6 +62,14 @@ public class ComputerController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @PutMapping
+    public ResponseEntity<Computer> edit(@RequestBody Computer computer) {
+        computerService.update(computer);
+        log.info(computer.toString());
+        return ResponseEntity.ok(computer);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         computerService.delete(id);

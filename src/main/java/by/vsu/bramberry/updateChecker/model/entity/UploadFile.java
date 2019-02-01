@@ -2,18 +2,20 @@ package by.vsu.bramberry.updateChecker.model.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
-@Entity
-@Table(name = "upload_file")
+
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 public class UploadFile {
+    @Transient
+    public static final String SEQUENCE_NAME = "files_sequence";
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
     private String fileName;
