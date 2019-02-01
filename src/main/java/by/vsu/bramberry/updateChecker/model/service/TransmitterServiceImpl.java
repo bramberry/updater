@@ -15,13 +15,14 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
     private final PathService pathService;
-    private List<Path> paths;
+  private List<String> paths;
     private CompletionService<Computer> service;
 
     @Autowired
@@ -34,7 +35,7 @@ public class TransmitterServiceImpl implements TransmitterService {
     private void init() {
         ExecutorService exec = Executors.newFixedThreadPool(Thread.activeCount());
         this.service = new ExecutorCompletionService(exec);
-        this.paths = pathService.findAll();
+      this.paths = pathService.findAll().stream().map(Path::getPath).collect(Collectors.toList());
     }
 
     @Override
