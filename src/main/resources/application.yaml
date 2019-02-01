@@ -13,6 +13,7 @@ spring:
 server:
   servlet:
     context-path: /api
+  port: ${PORT:8080}
 
 file:
   upload-dir: /files
