@@ -10,7 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Ram implements Serializable {
+class Ram implements Serializable {
 
     private String volume;
     private String model;

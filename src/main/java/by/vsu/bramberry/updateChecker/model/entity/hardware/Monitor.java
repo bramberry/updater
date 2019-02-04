@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class Monitor implements Serializable {
+class Monitor implements Serializable {
 
     private String diagonal;
     private String model;

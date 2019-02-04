@@ -16,6 +16,4 @@ public class Processor implements Serializable {
     private Integer amountOfCores;
     private String cpu;
     private Boolean virtualizationFirmwareEnabled;
-
-
 }

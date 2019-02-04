@@ -1,6 +1,5 @@
 package by.vsu.bramberry.updateChecker.model.entity.software;
 
-import by.vsu.bramberry.updateChecker.model.entity.Computer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,4 @@ public class Software implements Serializable {
     private Date installDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm")
     private Date updateDate;
-    private Computer computer;
-
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class Hdd implements Serializable {
+class Hdd implements Serializable {
     private String diskName;
     private String model;
     private String fragmentation;
