@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,7 +24,7 @@ public class UpdateController {
     private final RestTemplate restTemplate = new RestTemplate();
     private final UploadFileService uploadFileService;
 
-    //@PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping
     public ResponseEntity<String> updateAll() {
         try {
@@ -35,7 +36,7 @@ public class UpdateController {
         return ResponseEntity.ok("Task started");
     }
 
-    //@PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping(value = "/{ip}")
     public ResponseEntity<String> updateOne(@PathVariable String ip) {
         try {
@@ -47,7 +48,7 @@ public class UpdateController {
         return ResponseEntity.ok().body("Task started");
     }
 
-    //@PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping("download")
     public ResponseEntity<String> initDownload(@RequestParam String filename, @RequestParam String ip) {
 

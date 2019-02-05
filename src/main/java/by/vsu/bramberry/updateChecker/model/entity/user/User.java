@@ -33,7 +33,6 @@ public class User {
     private String lastName;
     @JsonProperty("dateRegistered")
     private Date dateRegistered;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
 }
