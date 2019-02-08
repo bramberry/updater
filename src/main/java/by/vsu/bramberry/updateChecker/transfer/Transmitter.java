@@ -1,7 +1,6 @@
 package by.vsu.bramberry.updateChecker.transfer;
 
 import by.vsu.bramberry.updateChecker.model.entity.Computer;
-import by.vsu.bramberry.updateChecker.model.entity.path.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -15,10 +14,10 @@ import java.util.concurrent.Callable;
 public class Transmitter implements Callable<Computer> {
     private final RestTemplate restTemplate;
     private String ip;
-    private List<Path> paths;
+    private List<String> paths;
 
 
-    public Transmitter(String ip, List<Path> paths) {
+    public Transmitter(String ip, List<String> paths) {
         this.ip = ip;
         this.paths = paths;
         restTemplate = new RestTemplate();
@@ -29,6 +28,7 @@ public class Transmitter implements Callable<Computer> {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/GetMainInfo")
                 .queryParam("paths", paths);
+        log.info("request: {}", builder.toUriString());
 
         //Отправляем пути к .exe файлам
         HttpEntity<Computer> response = restTemplate.exchange(
@@ -36,7 +36,7 @@ public class Transmitter implements Callable<Computer> {
                 HttpMethod.GET,
                 null,
                 Computer.class);
-
+        log.info("response: {}", response.getBody());
         return response.getBody();
     }
 }

@@ -9,6 +9,9 @@ import java.util.Set;
 @Slf4j
 public class UpdateServiceImpl {
     public static void updateSoftware(Set<Software> newSet, Set<Software> oldSet) {
+        if (newSet == null) {
+            return;
+        }
         for (Software software : newSet) {
             if (!oldSet.isEmpty()) {
                 for (Software s : oldSet) {

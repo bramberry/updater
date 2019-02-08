@@ -2,6 +2,7 @@ package by.vsu.bramberry.updateChecker.model.service.software;
 
 import by.vsu.bramberry.updateChecker.model.dao.PathDao;
 import by.vsu.bramberry.updateChecker.model.entity.path.Path;
+import by.vsu.bramberry.updateChecker.model.service.SequenceGeneratorService;
 import by.vsu.bramberry.updateChecker.model.service.iservice.PathService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,15 @@ import java.util.List;
 public class PathServiceImpl implements PathService {
 
     private final PathDao dao;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-
+    /*@PostConstruct
+    public void init(){
+        Path path = new Path();
+        path.setPath("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        path.setId(sequenceGeneratorService.getNextSequence(Path.SEQUENCE_NAME));
+        dao.save(path);
+    }*/
     @Override
     public Path save(Path path) {
         return dao.save(path);

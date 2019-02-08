@@ -4,6 +4,8 @@ package by.vsu.bramberry.updateChecker.controllers;
 import by.vsu.bramberry.updateChecker.model.entity.user.Role;
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
 import by.vsu.bramberry.updateChecker.model.security.JwtTokenProvider;
+import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.HEADER_STRING;
+import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.TOKEN_PREFIX;
 import by.vsu.bramberry.updateChecker.model.service.user.UserService;
 import by.vsu.bramberry.updateChecker.model.service.user.UserValidationService;
 import lombok.AllArgsConstructor;
@@ -16,13 +18,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 import java.util.Map;
-
-import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.HEADER_STRING;
-import static by.vsu.bramberry.updateChecker.model.security.SecurityConstants.TOKEN_PREFIX;
 
 
 /**
@@ -47,7 +54,6 @@ public class UserController {
      *
      * @return new {@link User} with Authentication token, or Map of errors
      */
-    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @PostMapping
     public ResponseEntity signUp(@RequestBody User user) {
         log.info("{}", user);
@@ -82,16 +88,22 @@ public class UserController {
      * @return Success if user has been updated
      * @throws NullPointerException If user is null
      */
-    @PatchMapping("/{username}")
-    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @PutMapping("/{username}")
+    @PreAuthorize("isFullyAuthenticated()")
     public ResponseEntity edit(@PathVariable("username") String username, @RequestBody User user) {
 
         String authUsername = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        if (!authUsername.equals(username)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is allowed to only edit himself!");
+        if (!authUsername.equals(username)
+                && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
         }
 
         user.setUsername(username);
+
+        if (user.getRole().equals(Role.ADMIN)
+                && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin allowed to set ADMIN role!");
+        }
 
         User updatedUser = userService.getUpdatedUser(user);
         Map<String, String> err = validatorService.validate(updatedUser);
@@ -110,10 +122,10 @@ public class UserController {
             log.debug("Generate token for User {}", user.getUsername());
             String token = tokenProvider.generateToken(user.getUsername());
 
-            return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body("Success!");
+            return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(updatedUser);
         }
 
-        return ResponseEntity.ok().body("Success!");
+        return ResponseEntity.ok().body(updatedUser);
     }
 
     /**
@@ -124,14 +136,14 @@ public class UserController {
      * @return Authentication error or new token in Header
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@PathParam("username") String username, @PathParam("password") String password) {
+    public ResponseEntity<User> login(@PathParam("username") String username, @PathParam("password") String password) {
         auth(username, password);
         log.warn("User {} successfully authenticated", username);
 
         log.debug("Generate token for User {}", username);
         String token = tokenProvider.generateToken(username);
 
-        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body("Success!");
+        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(userService.getUser(username));
     }
 
     /**
@@ -150,6 +162,16 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') and isFullyAuthenticated()")
+    @GetMapping
+    public ResponseEntity<List<User>> getAll() {
+        List<User> users = userService.getUsers();
+        if (users == null) {
+            ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok().body(users);
+    }
+
     /**
      * Only user with {@link Role} 'ADMIN' can delete user
      *
@@ -163,10 +185,11 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         User user = userService.getUser(id);
         String username = user.getUsername();
-        if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can't delete yourself.");
+        if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())
+                || SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            userService.delete(id);
         }
-        userService.delete(id);
+
         return ResponseEntity.ok().body("Delete success!");
 
     }

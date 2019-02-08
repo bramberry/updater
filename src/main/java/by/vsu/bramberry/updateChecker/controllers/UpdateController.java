@@ -9,7 +9,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,10 +53,10 @@ public class UpdateController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
-    @GetMapping("download")
-    public ResponseEntity<String> initDownload(@RequestParam String filename, @RequestParam String ip) {
+    @GetMapping("download/init")
+    public ResponseEntity<String> initDownload(@RequestParam String fileName, @RequestParam String ip) {
 
-        String downloadUri = uploadFileService.getByFileName(filename).getFileDownloadUri();
+        String downloadUri = uploadFileService.getByFileName(fileName).getFileDownloadUri();
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/InitDownload")
                 .queryParam("filename", downloadUri);

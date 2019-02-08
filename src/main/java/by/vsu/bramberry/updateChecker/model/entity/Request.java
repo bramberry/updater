@@ -1,26 +1,26 @@
 package by.vsu.bramberry.updateChecker.model.entity;
 
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "request")
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 @Getter
 @Setter
+@ToString
 public class Request {
+    @Transient
+    public static final String SEQUENCE_NAME = "request_sequence";
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String audienceNumber;
     private String description;
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    private String context;
     private User user;
+
 }

@@ -1,24 +1,27 @@
 package by.vsu.bramberry.updateChecker.model.entity.path;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "path")
+
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 public class Path implements Serializable {
-    @JsonIgnore
+
+    @Transient
+    public static final String SEQUENCE_NAME = "path_sequence";
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String path;
 

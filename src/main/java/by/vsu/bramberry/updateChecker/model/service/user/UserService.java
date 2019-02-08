@@ -4,6 +4,7 @@ package by.vsu.bramberry.updateChecker.model.service.user;
 import by.vsu.bramberry.updateChecker.model.dao.UserDAO;
 import by.vsu.bramberry.updateChecker.model.entity.user.Role;
 import by.vsu.bramberry.updateChecker.model.entity.user.User;
+import by.vsu.bramberry.updateChecker.model.service.SequenceGeneratorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class UserService {
 
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
     /**
      * Searches all user from a storage
@@ -67,6 +69,8 @@ public class UserService {
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDateRegistered(new Date());
+        user.setId(sequenceGeneratorService.getNextSequence(User.SEQUENCE_NAME));
+        user.setRole(Role.USER);
         userDAO.save(user);
     }
 

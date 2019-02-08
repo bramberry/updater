@@ -1,34 +1,24 @@
 spring:
   application:
     name: updateChecker
-  datasource:
-    url: jdbc:mysql://localhost:3306/update_checker?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password: root
-    driverClassName: com.mysql.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
   servlet:
     multipart:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 2000MB
       max-request-size: 2015MB
+  data:
+    mongodb:
+      uri: mongodb://vk:QBKBVx4Jm6riUfU@ds131721.mlab.com:31721/update_checker
 server:
   servlet:
     context-path: /api
-
-eldest:
-  date:
-    year: 1950
+  port: ${PORT:8080}
 
 file:
   upload-dir: /files
+
+
 authentication:
   jwt:
     secret:       secret
