@@ -93,17 +93,17 @@ public class UserController {
     public ResponseEntity edit(@PathVariable("username") String username, @RequestBody User user) {
 
         String authUsername = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-      if (!authUsername.equals(username)
-          && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
+        if (!authUsername.equals(username)
+                && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
         }
 
         user.setUsername(username);
 
-      if (user.getRole().equals(Role.ADMIN)
-          && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin allowed to set ADMIN role!");
-      }
+        if (user.getRole().equals(Role.ADMIN)
+                && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin allowed to set ADMIN role!");
+        }
 
         User updatedUser = userService.getUpdatedUser(user);
         Map<String, String> err = validatorService.validate(updatedUser);
@@ -122,10 +122,10 @@ public class UserController {
             log.debug("Generate token for User {}", user.getUsername());
             String token = tokenProvider.generateToken(user.getUsername());
 
-          return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(updatedUser);
+            return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(updatedUser);
         }
 
-      return ResponseEntity.ok().body(updatedUser);
+        return ResponseEntity.ok().body(updatedUser);
     }
 
     /**
@@ -143,7 +143,7 @@ public class UserController {
         log.debug("Generate token for User {}", username);
         String token = tokenProvider.generateToken(username);
 
-      return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(userService.getUser(username));
+        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(userService.getUser(username));
     }
 
     /**
@@ -162,15 +162,15 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-  @PreAuthorize("hasAuthority('ADMIN') and isFullyAuthenticated()")
-  @GetMapping
-  public ResponseEntity<List<User>> getAll() {
-    List<User> users = userService.getUsers();
-    if (users == null) {
-      ResponseEntity.notFound();
+    @PreAuthorize("hasAuthority('ADMIN') and isFullyAuthenticated()")
+    @GetMapping
+    public ResponseEntity<List<User>> getAll() {
+        List<User> users = userService.getUsers();
+        if (users == null) {
+            ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok().body(users);
     }
-    return ResponseEntity.ok().body(users);
-  }
 
     /**
      * Only user with {@link Role} 'ADMIN' can delete user
@@ -185,12 +185,12 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         User user = userService.getUser(id);
         String username = user.getUsername();
-      if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())
-          || SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
-        userService.delete(id);
+        if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())
+                || SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
+            userService.delete(id);
         }
 
-      return ResponseEntity.ok().body("Delete success!");
+        return ResponseEntity.ok().body("Delete success!");
 
     }
 

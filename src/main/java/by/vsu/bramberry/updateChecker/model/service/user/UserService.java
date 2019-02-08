@@ -70,7 +70,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDateRegistered(new Date());
         user.setId(sequenceGeneratorService.getNextSequence(User.SEQUENCE_NAME));
-      user.setRole(Role.USER);
+        user.setRole(Role.USER);
         userDAO.save(user);
     }
 

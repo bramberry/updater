@@ -16,15 +16,15 @@ import java.util.List;
 public class PathServiceImpl implements PathService {
 
     private final PathDao dao;
-  private final SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-  /*@PostConstruct
-  public void init(){
-      Path path = new Path();
-      path.setPath("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-      path.setId(sequenceGeneratorService.getNextSequence(Path.SEQUENCE_NAME));
-      dao.save(path);
-  }*/
+    /*@PostConstruct
+    public void init(){
+        Path path = new Path();
+        path.setPath("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        path.setId(sequenceGeneratorService.getNextSequence(Path.SEQUENCE_NAME));
+        dao.save(path);
+    }*/
     @Override
     public Path save(Path path) {
         return dao.save(path);

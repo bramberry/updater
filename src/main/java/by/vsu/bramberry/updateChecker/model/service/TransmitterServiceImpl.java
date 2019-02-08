@@ -14,7 +14,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +27,7 @@ import java.util.stream.Collectors;
 public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
     private final PathService pathService;
-  private List<String> paths;
+    private List<String> paths;
     private CompletionService<Computer> service;
 
     @Autowired
@@ -35,7 +40,7 @@ public class TransmitterServiceImpl implements TransmitterService {
     private void init() {
         ExecutorService exec = Executors.newFixedThreadPool(Thread.activeCount());
         this.service = new ExecutorCompletionService(exec);
-      this.paths = pathService.findAll().stream().map(Path::getPath).collect(Collectors.toList());
+        this.paths = pathService.findAll().stream().map(Path::getPath).collect(Collectors.toList());
     }
 
     @Override

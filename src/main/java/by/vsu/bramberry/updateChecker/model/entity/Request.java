@@ -20,6 +20,7 @@ public class Request {
     private Long id;
     private String audienceNumber;
     private String description;
+    private String context;
     private User user;
 
 }
