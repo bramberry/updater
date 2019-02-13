@@ -115,16 +115,6 @@ public class UserController {
 
         userService.update(updatedUser);
 
-        if (user.getPassword() != null) {
-            log.debug("Authenticate User {}", user.getUsername());
-            auth(user.getUsername(), user.getPassword());
-
-            log.debug("Generate token for User {}", user.getUsername());
-            String token = tokenProvider.generateToken(user.getUsername());
-
-            return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(updatedUser);
-        }
-
         return ResponseEntity.ok().body(updatedUser);
     }
 

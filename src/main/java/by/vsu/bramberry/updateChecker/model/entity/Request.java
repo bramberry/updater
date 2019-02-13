@@ -21,6 +21,7 @@ public class Request {
     private String audienceNumber;
     private String description;
     private String context;
+    private String state;
     private User user;
 
 }
