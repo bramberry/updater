@@ -2,13 +2,15 @@ package by.vsu.bramberry.updateChecker.model.service;
 
 import by.vsu.bramberry.updateChecker.model.dao.ComputerDao;
 import by.vsu.bramberry.updateChecker.model.entity.Computer;
+import by.vsu.bramberry.updateChecker.model.entity.software.Software;
 import by.vsu.bramberry.updateChecker.model.service.iservice.ComputerService;
-import by.vsu.bramberry.updateChecker.model.service.software.UpdateServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -72,7 +74,7 @@ public class ComputerServiceImpl implements ComputerService {
         }
         //Если версия программы изменилась, записываем старую и устанавливаем дату обновления
         if (oldVersion.getSoftwareSet() != null) {
-            UpdateServiceImpl.updateSoftware(computer.getSoftwareSet(), oldVersion.getSoftwareSet());
+            updateSoftware(computer.getSoftwareSet(), oldVersion.getSoftwareSet());
         }
         if (computer.getIp() == null) {
             computer.setIp(oldVersion.getIp());
@@ -105,5 +107,21 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public Computer findByIp(String ip) {
         return computerDao.findByIp(ip);
+    }
+
+    private void updateSoftware(Set<Software> newSet, Set<Software> oldSet) {
+        if (newSet == null || oldSet == null) {
+            return;
+        }
+        for (Software software : newSet) {
+            for (Software s : oldSet) {
+                if (software.getName().equals(s.getName())) {
+                    if (!software.getCurrentVersion().equals(s.getCurrentVersion())) {
+                        software.setPreviousVersion(s.getCurrentVersion());
+                        software.setUpdateDate(new Date());
+                    }
+                }
+            }
+        }
     }
 }
