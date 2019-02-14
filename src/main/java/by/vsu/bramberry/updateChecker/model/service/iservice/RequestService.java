@@ -9,5 +9,9 @@ public interface RequestService {
 
     void delete(Long id);
 
+    List<Request> findByUserId(Long id);
+
+    Request update(Request request);
+
     List<Request> findAll();
 }
