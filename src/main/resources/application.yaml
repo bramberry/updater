@@ -1,6 +1,6 @@
 spring:
   application:
-    name: updateChecker
+    name: updatechecker
   servlet:
     multipart:
       enabled: true
