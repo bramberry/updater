@@ -92,10 +92,12 @@ public class UserController {
     @PreAuthorize("isFullyAuthenticated()")
     public ResponseEntity edit(@PathVariable("username") String username, @RequestBody User user) {
 
-        String authUsername = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String authUsername = ((UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
         if (!authUsername.equals(username)
                 && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
         }
 
         user.setUsername(username);
@@ -133,7 +135,8 @@ public class UserController {
         log.debug("Generate token for User {}", username);
         String token = tokenProvider.generateToken(username);
 
-        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(userService.getUser(username));
+        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token)
+                .body(userService.getUser(username));
     }
 
     /**

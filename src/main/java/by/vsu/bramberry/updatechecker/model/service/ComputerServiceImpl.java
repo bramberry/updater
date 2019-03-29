@@ -72,7 +72,7 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer.getSoftwareSet() == null) {
             computer.setSoftwareSet(oldVersion.getSoftwareSet());
         }
-        //Если версия программы изменилась, записываем старую и устанавливаем дату обновления
+        //If software version changed, re-writing old and put data of update
         if (oldVersion.getSoftwareSet() != null) {
             updateSoftware(computer.getSoftwareSet(), oldVersion.getSoftwareSet());
         }
