@@ -1,5 +1,6 @@
 package by.vsu.bramberry.updatechecker.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class MyCORSFilter implements Filter {
 
@@ -37,10 +39,12 @@ public class MyCORSFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
+        log.debug(filterConfig.toString() + "init");
     }
 
     @Override
     public void destroy() {
+        log.debug(MyCORSFilter.class.getCanonicalName() + "destroy");
     }
 
 }

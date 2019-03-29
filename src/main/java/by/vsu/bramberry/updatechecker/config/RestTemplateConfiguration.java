@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfiguration {
 
     @Bean
-    public RestTemplate restTemplateWithIntercepter(
+    public RestTemplate restTemplateWithInterceptor(
             MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter) {
         RestTemplate restTemplate =
                 new RestTemplate(
