@@ -100,7 +100,6 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer.getHardware() == null) {
             computer.setHardware(oldVersion.getHardware());
         }
-        computerDao.deleteById(computer.getId());
         computerDao.save(computer);
     }
 
