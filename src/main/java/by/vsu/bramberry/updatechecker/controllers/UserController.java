@@ -4,8 +4,6 @@ package by.vsu.bramberry.updatechecker.controllers;
 import by.vsu.bramberry.updatechecker.model.entity.user.Role;
 import by.vsu.bramberry.updatechecker.model.entity.user.User;
 import by.vsu.bramberry.updatechecker.model.security.JwtTokenProvider;
-import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.HEADER_STRING;
-import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.TOKEN_PREFIX;
 import by.vsu.bramberry.updatechecker.model.service.user.UserService;
 import by.vsu.bramberry.updatechecker.model.service.user.UserValidationService;
 import lombok.AllArgsConstructor;
@@ -18,18 +16,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
+
+import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.HEADER_STRING;
+import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.TOKEN_PREFIX;
 
 
 /**
@@ -109,7 +103,9 @@ public class UserController {
 
         User updatedUser = userService.getUpdatedUser(user);
         Map<String, String> err = validatorService.validate(updatedUser);
-
+        if (userService.isExists(user.getUsername())) {
+            err.put("username", "Username already exists");
+        }
         if (err.size() > 0) {
             log.warn("Validation failed for user {}", user.getUsername());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed for user:\n" + err);
