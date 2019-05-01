@@ -11,12 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,14 +33,17 @@ public class FileController {
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @PostMapping("/upload")
     public ResponseEntity uploadVideo(@RequestParam("file") MultipartFile file) {
+        UploadFile uploadFile = uploadFileService.getByFileName(file.getOriginalFilename());
+        if (uploadFile != null) {
+            return ResponseEntity.ok(uploadFile);
+        }
         String fileName = fileStorageService.storeFile(file);
-
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
                 .path(fileName)
                 .toUriString();
 
-        UploadFile uploadFile = new UploadFile(fileName, fileDownloadUri,
+        uploadFile = new UploadFile(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
 
         return ResponseEntity.ok(uploadFileService.save(uploadFile));
