@@ -94,8 +94,6 @@ public class UserController {
                     .body("User is allowed to only edit himself! Or current user haven't ADMIN permissions");
         }
 
-        user.setUsername(username);
-
         if (user.getRole().equals(Role.ADMIN)
                 && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin allowed to set ADMIN role!");
@@ -103,7 +101,7 @@ public class UserController {
 
         User updatedUser = userService.getUpdatedUser(user);
         Map<String, String> err = validatorService.validate(updatedUser);
-        if (userService.isExists(user.getUsername())) {
+        if (!username.equals(user.getUsername()) && userService.isExists(user.getUsername())) {
             err.put("username", "Username already exists");
         }
         if (err.size() > 0) {
