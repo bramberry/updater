@@ -1,6 +1,5 @@
 package by.vsu.bramberry.updatechecker.controllers;
 
-import by.vsu.bramberry.updatechecker.model.entity.Computer;
 import by.vsu.bramberry.updatechecker.model.service.iservice.TransmitterService;
 import by.vsu.bramberry.updatechecker.model.service.iservice.UploadFileService;
 import lombok.AllArgsConstructor;
@@ -62,7 +61,7 @@ public class UpdateController {
                 builder.toUriString(),
                 HttpMethod.GET,
                 null,
-                Computer.class);
+                Object.class);
         return ResponseEntity.ok("initiated");
     }
 }
