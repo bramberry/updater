@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @NoArgsConstructor
 @Data
+@Document
 public class UploadFile {
     @Transient
     public static final String SEQUENCE_NAME = "files_sequence";

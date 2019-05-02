@@ -7,10 +7,12 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
 @Data
+@Document
 public class Computer {
     @Transient
     public static final String SEQUENCE_NAME = "computer_sequence";
