@@ -127,6 +127,10 @@ public class UserService {
             throw new IllegalStateException("User with your username was not found.");
         }
 
+        if (user.getUsername() != null) {
+            oldUser.setUsername(user.getUsername());
+        }
+
         if (user.getPassword() != null) {
             oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
