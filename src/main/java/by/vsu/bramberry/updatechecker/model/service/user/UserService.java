@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 /**
  * {@link UserService} provides methods to communicate with {@link UserDAO}
  *
- * @author Andrew
+ * @author Roman
  * @version 1.0
  */
 @Service
