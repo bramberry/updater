@@ -1,18 +1,14 @@
 package by.vsu.bramberry.updatechecker.model.entity.software;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Software implements Serializable {
     private String name;
     private String currentVersion;

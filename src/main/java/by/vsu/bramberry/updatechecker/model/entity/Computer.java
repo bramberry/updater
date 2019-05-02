@@ -4,7 +4,6 @@ import by.vsu.bramberry.updatechecker.model.entity.hardware.Hardware;
 import by.vsu.bramberry.updatechecker.model.entity.software.Software;
 import com.google.common.base.Objects;
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -12,7 +11,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import java.util.Set;
 
 @Data
-@ToString
 public class Computer {
     @Transient
     public static final String SEQUENCE_NAME = "computer_sequence";

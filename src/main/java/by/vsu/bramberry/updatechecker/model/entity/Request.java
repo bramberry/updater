@@ -1,18 +1,14 @@
 package by.vsu.bramberry.updatechecker.model.entity;
 
 import by.vsu.bramberry.updatechecker.model.entity.user.User;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Request {
     @Transient
     public static final String SEQUENCE_NAME = "request_sequence";
