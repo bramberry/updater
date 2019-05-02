@@ -4,6 +4,8 @@ package by.vsu.bramberry.updatechecker.controllers;
 import by.vsu.bramberry.updatechecker.model.entity.user.Role;
 import by.vsu.bramberry.updatechecker.model.entity.user.User;
 import by.vsu.bramberry.updatechecker.model.security.JwtTokenProvider;
+import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.HEADER_STRING;
+import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.TOKEN_PREFIX;
 import by.vsu.bramberry.updatechecker.model.service.user.UserService;
 import by.vsu.bramberry.updatechecker.model.service.user.UserValidationService;
 import lombok.AllArgsConstructor;
@@ -21,9 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
-
-import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.HEADER_STRING;
-import static by.vsu.bramberry.updatechecker.model.security.SecurityConstants.TOKEN_PREFIX;
 
 
 /**
@@ -99,7 +98,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admin allowed to set ADMIN role!");
         }
 
-        User updatedUser = userService.getUpdatedUser(user);
+        User updatedUser = userService.getUpdatedUser(username, user);
         Map<String, String> err = validatorService.validate(updatedUser);
         if (!username.equals(user.getUsername()) && userService.isExists(user.getUsername())) {
             err.put("username", "Username already exists");
@@ -111,7 +110,10 @@ public class UserController {
 
         userService.update(updatedUser);
 
-        return ResponseEntity.ok().body(updatedUser);
+        log.debug("Generate token for User {}", updatedUser.getUsername());
+        String token = tokenProvider.generateToken(updatedUser.getUsername());
+
+        return ResponseEntity.ok().header(HEADER_STRING, TOKEN_PREFIX + token).body(updatedUser);
     }
 
     /**

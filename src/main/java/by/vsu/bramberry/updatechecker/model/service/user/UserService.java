@@ -120,8 +120,8 @@ public class UserService {
         userDAO.save(user);
     }
 
-    public User getUpdatedUser(User user) {
-        User oldUser = userDAO.findByUsername(user.getUsername());
+    public User getUpdatedUser(String currentUsername, User user) {
+        User oldUser = userDAO.findByUsername(currentUsername);
 
         if (oldUser == null) {
             throw new IllegalStateException("User with your username was not found.");
