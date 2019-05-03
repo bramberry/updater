@@ -67,8 +67,11 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public void update(Computer computer) {
-        Computer oldVersion = findByIp(computer.getIp());
+        Computer oldVersion = computerDao.findById(computer.getId()).orElse(null);
 
+        if (oldVersion == null) {
+            throw new RuntimeException("Computer not found");
+        }
         if (computer.getSoftwareSet() == null) {
             computer.setSoftwareSet(oldVersion.getSoftwareSet());
         }
