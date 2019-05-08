@@ -7,6 +7,7 @@ import by.vsu.bramberry.updatechecker.model.entity.user.User;
 import by.vsu.bramberry.updatechecker.model.service.SequenceGeneratorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -138,7 +139,8 @@ public class UserService {
         if (user.getLastName() != null) {
             oldUser.setLastName(user.getLastName());
         }
-        if (user.getRole() != null) {
+        if (user.getRole() != null
+                && SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
             oldUser.setRole(user.getRole());
         }
 
