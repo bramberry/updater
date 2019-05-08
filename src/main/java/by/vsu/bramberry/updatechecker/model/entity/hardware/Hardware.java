@@ -1,18 +1,14 @@
 package by.vsu.bramberry.updatechecker.model.entity.hardware;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Hardware implements Serializable {
 
     private Set<Hdd> hddSet = new HashSet<>();

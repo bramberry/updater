@@ -4,19 +4,15 @@ import by.vsu.bramberry.updatechecker.model.entity.hardware.Hardware;
 import by.vsu.bramberry.updatechecker.model.entity.software.Software;
 import com.google.common.base.Objects;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
 @Data
-@Getter
-@Setter
-@ToString
+@Document
 public class Computer {
     @Transient
     public static final String SEQUENCE_NAME = "computer_sequence";
@@ -53,6 +49,5 @@ public class Computer {
     public int hashCode() {
         return Objects.hashCode(id, ip, audienceNumber, mac, description, systemUnitInvNumber, monitorInvNumber);
     }
-
 
 }

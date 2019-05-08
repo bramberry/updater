@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 /**
  * {@link UserService} provides methods to communicate with {@link UserDAO}
  *
- * @author Andrew
+ * @author Roman
  * @version 1.0
  */
 @Service
@@ -121,11 +121,15 @@ public class UserService {
         userDAO.save(user);
     }
 
-    public User getUpdatedUser(User user) {
-        User oldUser = userDAO.findByUsername(user.getUsername());
+    public User getUpdatedUser(String currentUsername, User user) {
+        User oldUser = userDAO.findByUsername(currentUsername);
 
         if (oldUser == null) {
             throw new IllegalStateException("User with your username was not found.");
+        }
+
+        if (user.getUsername() != null) {
+            oldUser.setUsername(user.getUsername());
         }
 
         if (user.getPassword() != null) {

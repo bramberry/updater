@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * Authorities that can be granted to a {@link User}.
  *
- * @author cassiomolin
+ * @author Roman
  */
 public enum Role implements GrantedAuthority {
     ADMIN, USER;
