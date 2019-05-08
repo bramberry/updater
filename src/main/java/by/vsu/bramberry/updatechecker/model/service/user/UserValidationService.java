@@ -41,7 +41,7 @@ public class UserValidationService {
             errors.put("password", "Password length less then 6");
         }
 
-        Pattern pattern = Pattern.compile("[A-Za-z]*");
+      Pattern pattern = Pattern.compile("[A-Za-zА-Яа-я]*");
         Matcher matcher = pattern.matcher(user.getFirstName());
 
         if (!matcher.matches()) {
