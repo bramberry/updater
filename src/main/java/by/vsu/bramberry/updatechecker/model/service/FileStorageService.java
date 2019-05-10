@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class FileStorageService {
@@ -38,6 +39,8 @@ public class FileStorageService {
     public String storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String randomString = UUID.randomUUID().toString().replace("-", "");
+        fileName = fileName.replace(".", randomString + ".");
 
         try {
             // Check if the file's name contains invalid characters

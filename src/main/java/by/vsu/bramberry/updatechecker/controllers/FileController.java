@@ -2,6 +2,7 @@ package by.vsu.bramberry.updatechecker.controllers;
 
 
 import by.vsu.bramberry.updatechecker.model.entity.UploadFile;
+import by.vsu.bramberry.updatechecker.model.exception.FileStoreException;
 import by.vsu.bramberry.updatechecker.model.service.FileStorageService;
 import by.vsu.bramberry.updatechecker.model.service.iservice.UploadFileService;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class FileController {
     public ResponseEntity uploadVideo(@RequestParam("file") MultipartFile file) {
         UploadFile uploadFile = uploadFileService.getByFileName(file.getOriginalFilename());
         if (uploadFile != null) {
-            return ResponseEntity.ok(uploadFile);
+          throw new FileStoreException("Sorry! Filename contains already exists");
         }
         String fileName = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
