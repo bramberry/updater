@@ -1,6 +1,5 @@
 package by.vsu.bramberry.updatechecker.model.entity;
 
-import by.vsu.bramberry.updatechecker.model.entity.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -20,6 +19,7 @@ public class Request {
     private String description;
     private String context;
     private String state;
-    private User user;
+    private Long userId;
+    private String username;
 
 }
