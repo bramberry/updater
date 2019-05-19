@@ -96,9 +96,6 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer.getAudienceNumber() == null) {
             computer.setAudienceNumber(oldVersion.getAudienceNumber());
         }
-        if (computer.getMac() == null) {
-            computer.setMac(oldVersion.getMac());
-        }
         if (computer.getSystemUnitInvNumber() == null) {
             computer.setSystemUnitInvNumber(oldVersion.getSystemUnitInvNumber());
         }

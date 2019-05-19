@@ -22,7 +22,6 @@ public class Computer {
     @Indexed(unique = true)
     private String ip;
     private String audienceNumber;
-    private String mac;
     private String description;
     @Indexed(unique = true)
     private String systemUnitInvNumber;
@@ -39,7 +38,6 @@ public class Computer {
         return Objects.equal(id, computer.id) &&
                 Objects.equal(ip, computer.ip) &&
                 Objects.equal(audienceNumber, computer.audienceNumber) &&
-                Objects.equal(mac, computer.mac) &&
                 Objects.equal(description, computer.description) &&
                 Objects.equal(systemUnitInvNumber, computer.systemUnitInvNumber) &&
                 Objects.equal(monitorInvNumber, computer.monitorInvNumber);
@@ -47,7 +45,7 @@ public class Computer {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, ip, audienceNumber, mac, description, systemUnitInvNumber, monitorInvNumber);
+        return Objects.hashCode(id, ip, audienceNumber, description, systemUnitInvNumber, monitorInvNumber);
     }
 
 }
