@@ -13,6 +13,7 @@ import java.util.List;
 public class UploadFileServiceImpl implements UploadFileService {
     private final UploadFileDao dao;
     private final SequenceGeneratorService sequenceGeneratorService;
+    private final FileStorageService fileStorageService;
 
     @Override
     public UploadFile getByFileName(String filename) {
@@ -31,7 +32,14 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
+    public UploadFile getById(Long id) {
+        return dao.findById(id).orElse(null);
+    }
+
+    @Override
     public void delete(Long id) {
+        UploadFile uploadFile = getById(id);
+        fileStorageService.deleteFile(uploadFile.getFileName());
         dao.deleteById(id);
     }
 }

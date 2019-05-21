@@ -11,5 +11,7 @@ public interface UploadFileService {
 
     List<UploadFile> getAll();
 
+    UploadFile getById(Long id);
+
     void delete(Long id);
 }

@@ -18,7 +18,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,6 +28,8 @@ import java.util.List;
 public class FileController {
     private final FileStorageService fileStorageService;
     private final UploadFileService uploadFileService;
+    private final static String SHOW_FILENAME = "filename";
+    private final static String FILE_TYPE = "type";
 
 
     /**
@@ -33,7 +37,7 @@ public class FileController {
      */
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @PostMapping("/upload")
-    public ResponseEntity uploadVideo(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) {
         UploadFile uploadFile = uploadFileService.getByFileName(file.getOriginalFilename());
         if (uploadFile != null) {
             throw new FileStoreException("Sorry! Filename contains already exists");
@@ -44,8 +48,9 @@ public class FileController {
                 .path(fileName)
                 .toUriString();
 
-        uploadFile = new UploadFile(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
+        Map<String, String> stats = getStats(file);
+        uploadFile = new UploadFile(fileName, stats.get(SHOW_FILENAME), fileDownloadUri,
+                stats.get(FILE_TYPE), file.getSize());
 
         return ResponseEntity.ok(uploadFileService.save(uploadFile));
     }
@@ -80,11 +85,29 @@ public class FileController {
         return ResponseEntity.ok(uploadFileService.getAll());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("files/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     public ResponseEntity<String> deleteFile(@PathVariable Long id) {
         uploadFileService.delete(id);
         return ResponseEntity.ok("Deleted");
+    }
+
+    private Map<String, String> getStats(MultipartFile file) {
+        Map<String, String> stats = new HashMap<>();
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new RuntimeException("There is no filename");
+        }
+
+        int index = file.getOriginalFilename().lastIndexOf(".");
+
+        String showFilename = originalFilename.substring(0, index);
+        String type = originalFilename.substring(index + 1);
+
+        stats.put(SHOW_FILENAME, showFilename);
+        stats.put(FILE_TYPE, type);
+
+        return stats;
     }
 
 }

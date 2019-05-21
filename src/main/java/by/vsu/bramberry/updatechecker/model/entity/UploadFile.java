@@ -18,12 +18,14 @@ public class UploadFile {
     private Long id;
     @Indexed(unique = true)
     private String fileName;
+    private String showFilename;
     private String fileDownloadUri;
     private String fileType;
     private long size;
 
-    public UploadFile(String fileName, String fileDownloadUri, String fileType, long size) {
+    public UploadFile(String fileName, String showFilename, String fileDownloadUri, String fileType, long size) {
         this.fileName = fileName;
+        this.showFilename = showFilename;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
         this.size = size;
