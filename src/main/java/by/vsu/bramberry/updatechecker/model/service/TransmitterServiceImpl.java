@@ -30,7 +30,7 @@ public class TransmitterServiceImpl implements TransmitterService {
 
     @PostConstruct
     private void init() {
-        ExecutorService exec = Executors.newFixedThreadPool(Thread.activeCount());
+      ExecutorService exec = Executors.newFixedThreadPool(30);
         this.service = new ExecutorCompletionService<>(exec);
     }
 
@@ -80,9 +80,10 @@ public class TransmitterServiceImpl implements TransmitterService {
             Transmitter transmitter = new Transmitter(computer.getIp());
             service.submit(transmitter);
         });
+      int size = computers.size();
         computers = Lists.newArrayList();
 
-        for (int i = 0; i < computers.size(); i++) {
+      for (int i = 0; i < size; i++) {
             Future<Computer> future = service.take();
             computers.add(future.get());
         }
