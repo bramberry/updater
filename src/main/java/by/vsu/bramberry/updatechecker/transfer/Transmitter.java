@@ -32,7 +32,11 @@ public class Transmitter implements Callable<Computer> {
                 HttpMethod.GET,
                 null,
                 Computer.class);
-        log.info("response: {}", response.getBody());
-        return response.getBody();
+        Computer computer = response.getBody();
+        log.info("response: {}", computer);
+        if (computer != null) {
+            computer.setIp(ip);
+        }
+        return computer;
     }
 }
