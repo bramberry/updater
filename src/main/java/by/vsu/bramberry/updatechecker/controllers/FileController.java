@@ -36,7 +36,7 @@ public class FileController {
     public ResponseEntity uploadVideo(@RequestParam("file") MultipartFile file) {
         UploadFile uploadFile = uploadFileService.getByFileName(file.getOriginalFilename());
         if (uploadFile != null) {
-          throw new FileStoreException("Sorry! Filename contains already exists");
+            throw new FileStoreException("Sorry! Filename contains already exists");
         }
         String fileName = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()

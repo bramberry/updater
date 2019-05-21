@@ -3,6 +3,8 @@ package by.vsu.bramberry.updatechecker.model.service;
 import by.vsu.bramberry.updatechecker.model.entity.Computer;
 import by.vsu.bramberry.updatechecker.model.service.iservice.ComputerService;
 import by.vsu.bramberry.updatechecker.model.service.iservice.TransmitterService;
+import by.vsu.bramberry.updatechecker.model.service.iservice.UploadFileService;
+import by.vsu.bramberry.updatechecker.transfer.Installer;
 import by.vsu.bramberry.updatechecker.transfer.Transmitter;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -18,11 +19,13 @@ import java.util.concurrent.*;
 @Slf4j
 public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
+    private final UploadFileService uploadFileService;
     private CompletionService<Computer> service;
 
     @Autowired
-    public TransmitterServiceImpl(ComputerService computerService) {
+    public TransmitterServiceImpl(ComputerService computerService, UploadFileService uploadFileService) {
         this.computerService = computerService;
+        this.uploadFileService = uploadFileService;
     }
 
     @PostConstruct
@@ -32,23 +35,15 @@ public class TransmitterServiceImpl implements TransmitterService {
     }
 
     @Override
+    public void transmitAll(String audienceNumber) throws InterruptedException, ExecutionException {
+        List<Computer> computers = computerService.findAllByAudienceNumber(audienceNumber);
+        update(computers);
+    }
+
+    @Override
     public void transmitAll() throws InterruptedException, ExecutionException {
-        ArrayList<String> ipList = Lists.newArrayList();
         List<Computer> computers = computerService.findAll();
-        computers.forEach(computer -> ipList.add(computer.getIp()));
-
-        for (String ip : ipList) {
-            Transmitter transmitter = new Transmitter(ip);
-            service.submit(transmitter);
-        }
-        computers = Lists.newArrayList();
-
-        for (int i = 0; i < ipList.size(); i++) {
-            Future<Computer> future = service.take();
-            computers.add(future.get());
-        }
-
-        computers.forEach(computerService::update);
+        update(computers);
     }
 
     @Override
@@ -60,5 +55,38 @@ public class TransmitterServiceImpl implements TransmitterService {
             computer.setIp(ip);
             computerService.update(computer);
         }
+    }
+
+    public void installInAudience(String fileName, String number) {
+        String downloadUri = uploadFileService.getByFileName(fileName).getFileDownloadUri();
+
+        List<Computer> computers = computerService.findAllByAudienceNumber(number);
+
+        computers.forEach(computer -> {
+            Installer installer = new Installer(downloadUri, computer.getIp(), fileName);
+            new Thread(installer).start();
+        });
+
+    }
+
+    public void installOnce(String fileName, String ip) {
+        String downloadUri = uploadFileService.getByFileName(fileName).getFileDownloadUri();
+        Installer installer = new Installer(downloadUri, ip, fileName);
+        new Thread(installer).start();
+    }
+
+    private void update(List<Computer> computers) throws InterruptedException, ExecutionException {
+        computers.forEach(computer -> {
+            Transmitter transmitter = new Transmitter(computer.getIp());
+            service.submit(transmitter);
+        });
+        computers = Lists.newArrayList();
+
+        for (int i = 0; i < computers.size(); i++) {
+            Future<Computer> future = service.take();
+            computers.add(future.get());
+        }
+
+        computers.forEach(computerService::update);
     }
 }

@@ -1,16 +1,12 @@
 package by.vsu.bramberry.updatechecker.controllers;
 
 import by.vsu.bramberry.updatechecker.model.service.iservice.TransmitterService;
-import by.vsu.bramberry.updatechecker.model.service.iservice.UploadFileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.concurrent.ExecutionException;
 
@@ -20,14 +16,12 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("updates")
 public class UpdateController {
     private final TransmitterService transmitterService;
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final UploadFileService uploadFileService;
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
     @GetMapping
-    public ResponseEntity updateAll() {
+    public ResponseEntity updateAll(@RequestParam String audienceNumber) {
         try {
-            transmitterService.transmitAll();
+            transmitterService.transmitAll(audienceNumber);
         } catch (InterruptedException | ExecutionException e) {
             log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Update error");
@@ -48,20 +42,16 @@ public class UpdateController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
-    @GetMapping("download/init")
+    @GetMapping("install/single")
     public ResponseEntity<String> initDownload(@RequestParam String fileName, @RequestParam String ip) {
+        transmitterService.installOnce(fileName, ip);
+        return ResponseEntity.ok("Install init");
+    }
 
-        String downloadUri = uploadFileService.getByFileName(fileName).getFileDownloadUri();
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/InitDownload")
-                .queryParam("filename", downloadUri)
-                .queryParam("name", fileName);
-
-        restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                null,
-                Object.class);
-        return ResponseEntity.ok("initiated");
+    @PreAuthorize("hasAnyAuthority('ADMIN') and isFullyAuthenticated()")
+    @GetMapping("install/audience")
+    public ResponseEntity<String> initAudienceDownload(@RequestParam String fileName, @RequestParam String audienceNumber) {
+        transmitterService.installInAudience(fileName, audienceNumber);
+        return ResponseEntity.ok("Install init");
     }
 }

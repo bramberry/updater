@@ -23,7 +23,7 @@ public class Transmitter implements Callable<Computer> {
     public Computer call() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/GetMainInfo");
-                
+
         log.info("request: {}", builder.toUriString());
 
         //Отправляем пути к .exe файлам
