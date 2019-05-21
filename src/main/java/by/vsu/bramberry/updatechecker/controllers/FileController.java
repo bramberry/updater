@@ -26,11 +26,10 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 public class FileController {
-    private final FileStorageService fileStorageService;
-    private final UploadFileService uploadFileService;
     private final static String SHOW_FILENAME = "filename";
     private final static String FILE_TYPE = "type";
-
+    private final FileStorageService fileStorageService;
+    private final UploadFileService uploadFileService;
 
     /**
      * @return updated channel with new video or Uploading error
