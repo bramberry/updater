@@ -23,7 +23,7 @@ public class Installer implements Runnable {
     public void run() {
         try {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://" + ip + ":6666/InitDownload")
-                    .queryParam("filename", uri)
+                    .queryParam("uri", uri)
                     .queryParam("name", fileName);
 
             restTemplate.exchange(
