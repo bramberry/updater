@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.UUID;
 
 @Service
@@ -38,10 +35,7 @@ public class FileStorageService {
 
     public String storeFile(MultipartFile file) {
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String randomString = UUID.randomUUID().toString().replace("-", "");
-        fileName = fileName.replace(".", randomString + ".");
-
+        String fileName = normalizeFilename(file);
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
@@ -58,6 +52,13 @@ public class FileStorageService {
         }
     }
 
+    private String normalizeFilename(MultipartFile file) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        int index = fileName.lastIndexOf(".");
+        String randomString = UUID.randomUUID().toString();
+        return randomString + fileName.substring(index);
+    }
+
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -72,12 +73,12 @@ public class FileStorageService {
         }
     }
 
-    public void deleteFile(String fileName) {
+    void deleteFile(String fileName) {
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
         try {
             Files.delete(targetLocation);
         } catch (IOException e) {
-            throw new FileStoreException(e.getMessage(), e);
+            throw new FileStoreException("No such file " + fileName, e);
         }
     }
 }
