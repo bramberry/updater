@@ -52,7 +52,6 @@ public class TransmitterServiceImpl implements TransmitterService {
         Future<Computer> stringFuture = service.submit(transmitter);
         Computer computer = stringFuture.get();
         if (computer != null) {
-            computer.setIp(ip);
             computerService.update(computer);
         }
     }
