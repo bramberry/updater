@@ -75,7 +75,7 @@ public class ComputerServiceImpl implements ComputerService {
         }
 
         if (oldVersion == null) {
-            throw new RuntimeException("Computer not found");
+            throw new IllegalStateException("There is no ip or id parameters");
         }
         if (computer.getSoftwareSet() == null) {
             computer.setSoftwareSet(oldVersion.getSoftwareSet());

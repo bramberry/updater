@@ -12,11 +12,11 @@ public class Installer implements Runnable {
     private final String uri;
     private final String fileName;
 
-    public Installer(String uri, String ip, String fileName) {
+    public Installer(String uri, String ip, String fileName, RestTemplate restTemplate) {
         this.fileName = fileName;
         this.ip = ip;
         this.uri = uri;
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = restTemplate;
     }
 
     @Override

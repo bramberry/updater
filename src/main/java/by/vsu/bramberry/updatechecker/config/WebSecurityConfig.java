@@ -2,6 +2,7 @@ package by.vsu.bramberry.updatechecker.config;
 
 import by.vsu.bramberry.updatechecker.model.security.JwtAuthenticationEntryPoint;
 import by.vsu.bramberry.updatechecker.model.security.JwtAuthenticationFilter;
+import by.vsu.bramberry.updatechecker.model.security.JwtTokenProvider;
 import by.vsu.bramberry.updatechecker.model.service.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,18 +26,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final UserDetailsServiceImpl customUserDetailsService;
-
+    private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImpl customUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler) {
+    public WebSecurityConfig(UserDetailsServiceImpl customUserDetailsService, JwtTokenProvider jwtTokenProvider, JwtAuthenticationEntryPoint unauthorizedHandler) {
         this.customUserDetailsService = customUserDetailsService;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+        return new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
     }
 
     @Override

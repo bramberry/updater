@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -21,11 +22,13 @@ public class TransmitterServiceImpl implements TransmitterService {
     private final ComputerService computerService;
     private final UploadFileService uploadFileService;
     private CompletionService<Computer> service;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public TransmitterServiceImpl(ComputerService computerService, UploadFileService uploadFileService) {
+    public TransmitterServiceImpl(ComputerService computerService, UploadFileService uploadFileService, RestTemplate restTemplate) {
         this.computerService = computerService;
         this.uploadFileService = uploadFileService;
+        this.restTemplate = restTemplate;
     }
 
     @PostConstruct
@@ -48,7 +51,7 @@ public class TransmitterServiceImpl implements TransmitterService {
 
     @Override
     public void transmit(String ip) throws ExecutionException, InterruptedException {
-        Transmitter transmitter = new Transmitter(ip);
+        Transmitter transmitter = new Transmitter(ip, restTemplate);
         Future<Computer> stringFuture = service.submit(transmitter);
         Computer computer = stringFuture.get();
         if (computer != null) {
@@ -62,7 +65,7 @@ public class TransmitterServiceImpl implements TransmitterService {
         List<Computer> computers = computerService.findAllByAudienceNumber(number);
 
         computers.forEach(computer -> {
-            Installer installer = new Installer(downloadUri, computer.getIp(), fileName);
+            Installer installer = new Installer(downloadUri, computer.getIp(), fileName, restTemplate);
             new Thread(installer).start();
         });
 
@@ -70,13 +73,13 @@ public class TransmitterServiceImpl implements TransmitterService {
 
     public void installOnce(String fileName, String ip) {
         String downloadUri = uploadFileService.getByFileName(fileName).getFileDownloadUri();
-        Installer installer = new Installer(downloadUri, ip, fileName);
+        Installer installer = new Installer(downloadUri, ip, fileName, restTemplate);
         new Thread(installer).start();
     }
 
     private void update(List<Computer> computers) throws InterruptedException, ExecutionException {
         computers.forEach(computer -> {
-            Transmitter transmitter = new Transmitter(computer.getIp());
+            Transmitter transmitter = new Transmitter(computer.getIp(), restTemplate);
             service.submit(transmitter);
         });
         int size = computers.size();

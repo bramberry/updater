@@ -14,9 +14,9 @@ public class Transmitter implements Callable<Computer> {
     private final RestTemplate restTemplate;
     private String ip;
 
-    public Transmitter(String ip) {
+    public Transmitter(String ip, RestTemplate restTemplate) {
         this.ip = ip;
-        restTemplate = new RestTemplate();
+        this.restTemplate = restTemplate;
     }
 
     @Override
